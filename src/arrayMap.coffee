@@ -36,7 +36,6 @@ iterJoin = (iterable, generatorFunc) ->
         yield from generatorFunc(value)
 
 class ArrayMap
-    @length = 0
     constructor: ->
         @size = 0
         @subMaps = null
