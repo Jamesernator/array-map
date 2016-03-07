@@ -5,6 +5,7 @@
 ArrayMap is a ES6 Map-like object designed for use where arrays are needed to act as map keys by array-values rather than array identity for example
 
 ```javascript
+ArrayMap = require('array-map')
 arrayMap = new ArrayMap();
 arrayMap.set([1,2,3], 10);
 console.log(arrayMap.get([1,2,3])); // prints 10 even though [1,2,3] has
