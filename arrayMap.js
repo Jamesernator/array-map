@@ -54,8 +54,6 @@
   };
 
   ArrayMap = (function() {
-    ArrayMap.length = 0;
-
     function ArrayMap() {
       this.size = 0;
       this.subMaps = null;
