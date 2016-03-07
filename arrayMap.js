@@ -54,6 +54,8 @@
   };
 
   ArrayMap = (function() {
+    ArrayMap.length = 0;
+
     function ArrayMap() {
       this.size = 0;
       this.subMaps = null;
@@ -73,17 +75,16 @@
     ArrayMap.prototype["delete"] = function(arrayKey) {
 
       /* Removes a given arrayKey from the arrayMap, if it existed
-          return the value deleted, else return false
+          return true, else return false
        */
-      var newSize, oldValue, previousSize, result;
+      var newSize, previousSize, result;
       if (arrayKey.length === 0) {
         if (this.hasValue) {
           this.size -= 1;
         }
-        oldValue = this.value;
         this.value = void 0;
         this.hasValue = false;
-        return oldValue;
+        return true;
       } else if (this.subMaps == null) {
         return false;
       } else if (!this.subMaps.has(arrayKey[0])) {
