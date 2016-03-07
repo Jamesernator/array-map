@@ -36,11 +36,14 @@ iterJoin = (iterable, generatorFunc) ->
         yield from generatorFunc(value)
 
 class ArrayMap
-    constructor: ->
+    constructor: (iterable=null) ->
         @size = 0
         @subMaps = null
         @value = undefined
         @hasValue = false
+        if iterable?
+            iterEach iterable, ([arrayKey, value]) =>
+                @set(arrayKey, value)
 
     clear: ->
         ### Removes everything from the arrayMap ###

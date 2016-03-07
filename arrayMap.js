@@ -54,11 +54,23 @@
   };
 
   ArrayMap = (function() {
-    function ArrayMap() {
+    function ArrayMap(iterable) {
+      if (iterable == null) {
+        iterable = null;
+      }
       this.size = 0;
       this.subMaps = null;
       this.value = void 0;
       this.hasValue = false;
+      if (iterable != null) {
+        iterEach(iterable, (function(_this) {
+          return function(arg) {
+            var arrayKey, value;
+            arrayKey = arg[0], value = arg[1];
+            return _this.set(arrayKey, value);
+          };
+        })(this));
+      }
     }
 
     ArrayMap.prototype.clear = function() {
