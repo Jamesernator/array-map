@@ -36,6 +36,7 @@ iterJoin = (iterable, generatorFunc) ->
         yield from generatorFunc(value)
 
 class ArrayMap
+    @length = 0
     constructor: ->
         @size = 0
         @subMaps = null
@@ -51,16 +52,15 @@ class ArrayMap
 
     delete: (arrayKey) ->
         ### Removes a given arrayKey from the arrayMap, if it existed
-            return the value deleted, else return false
+            return true, else return false
         ###
         if arrayKey.length is 0
             # Base case is just to remove the value
             if @hasValue
                 @size -= 1
-            oldValue = @value
             @value = undefined
             @hasValue = false
-            return oldValue
+            return true
         else unless @subMaps?
             # If there's no subMaps to search just return false
             return false
