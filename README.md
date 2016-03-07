@@ -13,7 +13,7 @@ console.log(arrayMap.get([1,2,3])); // prints 10 even though [1,2,3] has
 ```
 
 ## Install
-```npm install array-map```
+```npm install github:Jamesernator/es6-array-map```
 
 
 ## Documentation
@@ -229,7 +229,7 @@ map.set([12,13], 'llamas');
 Array.from(map.keys()); // [200, 12, 16, 'llamas']
 ```
 
-#### ArrayMap.prototype[@@iterator]()
+#### ArrayMap.prototype\[@@iterator\]()
 Returns an Iterator of [key, value] pairs, this is equivalent to ArrayMap.prototype.entries()
 
 
