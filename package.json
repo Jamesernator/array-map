@@ -3,7 +3,7 @@
     "main": "./arrayMap.js",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Jamesernator/array-map"
+        "url": "https://github.com/Jamesernator/es6-array-map"
     },
     "version": "0.9.9",
     "author": "James \"The Jamesernator\" Browning",
