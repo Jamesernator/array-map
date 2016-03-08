@@ -239,6 +239,10 @@
 
   })();
 
-  module.exports = ArrayMap;
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ArrayMap;
+  } else {
+    window.ArrayMap = ArrayMap;
+  }
 
 }).call(this);
