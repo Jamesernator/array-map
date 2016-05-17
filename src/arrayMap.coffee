@@ -198,8 +198,6 @@ class ArrayMap
         ### Returns an iterator of [key, value] pairs ###
         return @entries()
 
-
-
 if module?
     module.exports = ArrayMap
 else
