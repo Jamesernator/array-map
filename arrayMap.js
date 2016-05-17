@@ -58,7 +58,9 @@
       if (iterable == null) {
         iterable = null;
       }
-      this.serialize = serialize != null ? serialize : function() {};
+      if (serialize == null) {
+        serialize = function() {};
+      }
 
       /* Serialize allows converting keys when passed to any method */
       this.size = 0;
@@ -258,6 +260,10 @@
 
   })();
 
-  module.exports = ArrayMap;
+  if (typeof module !== "undefined" && module !== null) {
+    module.exports = ArrayMap;
+  } else {
+    window.ArrayMap = ArrayMap;
+  }
 
 }).call(this);

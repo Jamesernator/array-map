@@ -99,7 +99,7 @@ class ArrayMap
         if @subMaps?
             yield from iterJoin @subMaps, ([key, subMap]) =>
                 subEntries = @subMaps.get(key).entries()
-                yield from iterMap subEntries, ([subKey, value]) =>
+                yield from iterMap subEntries, ([subKey, value]) ->
                     return [[key].concat(subKey), value]
 
     forEach: (callback, thisArg) ->
@@ -198,4 +198,9 @@ class ArrayMap
         ### Returns an iterator of [key, value] pairs ###
         return @entries()
 
-module.exports = ArrayMap
+
+
+if module?
+    module.exports = ArrayMap
+else
+    window.ArrayMap = ArrayMap
