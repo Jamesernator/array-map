@@ -36,6 +36,29 @@ Its the prototype for ArrayMap objects, feel free to extend it.
 
 ### Methods
 
+#### new ArrayMap(iterable, serialize)
+When creating an ArrayMap you can pass in an iterable argument just like
+es6 Map however you can also pass in an additional argument: serialize, this
+argument must be a function and will be called on every arrayKey passed to any
+of the methods, this function must return an Array (or array-like)
+
+```javascript
+function toSet(arr) {
+    return Array.from(new Set(arr)).sort();
+}
+
+var map = new ArrayMap(null, toSet);
+map.set([1,2,2], 'foo')
+map.get([2,1]) // 'foo'
+
+map.set([2,1], 'bar')
+map.get([1,2,2]) // 'bar'
+
+map.delete([1,1,1,1,1,2,2,2,2,2,2])
+map.has([1,2,2]) // false
+
+```
+
 #### ArrayMap.prototype.clear()
 Removes all [arrayKey, value] pairs from the ArrayMap object.
 ```javascript

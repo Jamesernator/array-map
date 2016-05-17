@@ -36,7 +36,8 @@ iterJoin = (iterable, generatorFunc) ->
         yield from generatorFunc(value)
 
 class ArrayMap
-    constructor: (iterable=null) ->
+    constructor: (iterable=null, serialize=->) ->
+        ### Serialize allows converting keys when passed to any method ###
         @size = 0
         @subMaps = null
         @value = undefined
@@ -53,6 +54,9 @@ class ArrayMap
         @hasValue = false
 
     delete: (arrayKey) ->
+        return @_delete(@serialize(arrayKey))
+
+    _delete: (arrayKey) ->
         ### Removes a given arrayKey from the arrayMap, if it existed
             return true, else return false
         ###
@@ -74,7 +78,7 @@ class ArrayMap
             # Proceed recursively updating changes in the current subTree
             previousSize = @subMaps.get(arrayKey[0]).size
             # Get the result of deletion for returning
-            result = @subMaps.get(arrayKey[0]).delete(arrayKey[1...])
+            result = @subMaps.get(arrayKey[0])._delete(arrayKey[1...])
             newSize = @subMaps.get(arrayKey[0]).size
             # Update size with any changes from subMap
             @size += newSize - previousSize
@@ -107,6 +111,9 @@ class ArrayMap
             _callback(value, key, this)
 
     get: (arrayKey) ->
+        return @_get(@serialize(arrayKey))
+
+    _get: (arrayKey) ->
         ### Returns the value associated with a given arrayKey
             returns undefined if we don't have such a value
         ###
@@ -123,9 +130,12 @@ class ArrayMap
             return undefined
         else
             # Proceed down recursively
-            return @subMaps.get(arrayKey[0]).get(arrayKey[1...])
+            return @subMaps.get(arrayKey[0])._get(arrayKey[1...])
 
     has: (arrayKey) ->
+        return @_has(@serialize(arrayKey))
+
+    _has: (arrayKey) ->
         ### Returns true if there is a value associated with arrayKey,
             false otherwise
         ###
@@ -141,7 +151,7 @@ class ArrayMap
             return false
         else
             # Traverse recursively to find it
-            return @subMaps.get(arrayKey[0]).has(arrayKey[1...])
+            return @subMaps.get(arrayKey[0])._has(arrayKey[1...])
 
     keys: ->
         ### Returns an iterator of keys of the arrayMap ###
@@ -149,6 +159,9 @@ class ArrayMap
             return key
 
     set: (arrayKey, value) ->
+        return @_set(@serialize(arrayKey), value)
+
+    _set: (arrayKey, value) ->
         ### Associates in the map the given arrayKey with the given value ###
         if arrayKey.length is 0
             # If arrayKey is empty consider this node
@@ -164,12 +177,12 @@ class ArrayMap
 
             unless @subMaps.has(arrayKey[0])
                 # If we don't have an existing subMap create it
-                @subMaps.set(arrayKey[0], new ArrayMap())
+                @subMaps.set(arrayKey[0], new ArrayMap(null, @serialize))
 
 
             previousSize = @subMaps.get(arrayKey[0]).size
             # Update the arrayMap recursively
-            @subMaps.get(arrayKey[0]).set(arrayKey[1...], value)
+            @subMaps.get(arrayKey[0])._set(arrayKey[1...], value)
             ## Get new size of subMap and update current size appropriately
             newSize = @subMaps.get(arrayKey[0]).size
             @size += newSize - previousSize

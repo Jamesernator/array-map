@@ -54,10 +54,13 @@
   };
 
   ArrayMap = (function() {
-    function ArrayMap(iterable) {
+    function ArrayMap(iterable, serialize) {
       if (iterable == null) {
         iterable = null;
       }
+      this.serialize = serialize != null ? serialize : function() {};
+
+      /* Serialize allows converting keys when passed to any method */
       this.size = 0;
       this.subMaps = null;
       this.value = void 0;
@@ -83,6 +86,10 @@
     };
 
     ArrayMap.prototype["delete"] = function(arrayKey) {
+      return this._delete(this.serialize(arrayKey));
+    };
+
+    ArrayMap.prototype._delete = function(arrayKey) {
 
       /* Removes a given arrayKey from the arrayMap, if it existed
           return true, else return false
@@ -101,7 +108,7 @@
         return false;
       } else {
         previousSize = this.subMaps.get(arrayKey[0]).size;
-        result = this.subMaps.get(arrayKey[0])["delete"](arrayKey.slice(1));
+        result = this.subMaps.get(arrayKey[0])._delete(arrayKey.slice(1));
         newSize = this.subMaps.get(arrayKey[0]).size;
         this.size += newSize - previousSize;
         if (this.subMaps.get(arrayKey[0]).size === 0) {
@@ -153,6 +160,10 @@
     };
 
     ArrayMap.prototype.get = function(arrayKey) {
+      return this._get(this.serialize(arrayKey));
+    };
+
+    ArrayMap.prototype._get = function(arrayKey) {
 
       /* Returns the value associated with a given arrayKey
           returns undefined if we don't have such a value
@@ -164,11 +175,15 @@
       } else if (!this.subMaps.has(arrayKey[0])) {
         return void 0;
       } else {
-        return this.subMaps.get(arrayKey[0]).get(arrayKey.slice(1));
+        return this.subMaps.get(arrayKey[0])._get(arrayKey.slice(1));
       }
     };
 
     ArrayMap.prototype.has = function(arrayKey) {
+      return this._has(this.serialize(arrayKey));
+    };
+
+    ArrayMap.prototype._has = function(arrayKey) {
 
       /* Returns true if there is a value associated with arrayKey,
           false otherwise
@@ -180,7 +195,7 @@
       } else if (!this.subMaps.has(arrayKey[0])) {
         return false;
       } else {
-        return this.subMaps.get(arrayKey[0]).has(arrayKey.slice(1));
+        return this.subMaps.get(arrayKey[0])._has(arrayKey.slice(1));
       }
     };
 
@@ -195,6 +210,10 @@
     };
 
     ArrayMap.prototype.set = function(arrayKey, value) {
+      return this._set(this.serialize(arrayKey), value);
+    };
+
+    ArrayMap.prototype._set = function(arrayKey, value) {
 
       /* Associates in the map the given arrayKey with the given value */
       var newSize, previousSize;
@@ -209,10 +228,10 @@
           this.subMaps = new Map();
         }
         if (!this.subMaps.has(arrayKey[0])) {
-          this.subMaps.set(arrayKey[0], new ArrayMap());
+          this.subMaps.set(arrayKey[0], new ArrayMap(null, this.serialize));
         }
         previousSize = this.subMaps.get(arrayKey[0]).size;
-        this.subMaps.get(arrayKey[0]).set(arrayKey.slice(1), value);
+        this.subMaps.get(arrayKey[0])._set(arrayKey.slice(1), value);
         newSize = this.subMaps.get(arrayKey[0]).size;
         this.size += newSize - previousSize;
       }
