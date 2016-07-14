@@ -13,7 +13,7 @@ console.log(arrayMap.get([1,2,3])); // prints 10 even though [1,2,3] has
 ```
 
 ## Install
-```npm install github:Jamesernator/es6-array-map```
+```npm install es6-array-map```
 
 
 ## Documentation
