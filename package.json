@@ -1,11 +1,19 @@
 {
     "name": "es6-array-map",
-    "main": "./arrayMap.js",
+    "main": "./ArrayMap-commonjs.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/Jamesernator/es6-array-map"
     },
-    "version": "2.0.1",
+    "version": "2.0.2",
     "author": "James \"The Jamesernator\" Browning",
-    "description": "This is a ES6 Map-Like structure for using Arrays as keys"
+    "description": "This is a ES6 Map-Like structure for using Arrays as keys",
+    "devDependencies": {
+        "babel-cli": "latest",
+        "babel-plugin-transform-es2015-modules-commonjs": "latest",
+        "babel-plugin-add-module-exports": "latest"
+    },
+    "scripts": {
+        "prepublish": "babel ArrayMap.js > ArrayMap-commonjs.js"
+    }
 }
